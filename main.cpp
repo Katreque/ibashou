@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <cstdlib>
 #include <GL/glut.h>
 
@@ -11,7 +12,7 @@ void myReshape(int w, int h){
 }
 
 void myDisplay(void){
-    glClearColor(0.5,0.5,0.5,1.0);
+    glClearColor(0,0,0,0);
     glClear(GL_COLOR_BUFFER_BIT);
 
     glutSwapBuffers();
@@ -21,7 +22,7 @@ int main(int argc, char** argv){
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowSize(700,700);
-    glutInitWindowPosition(0,0);
+    glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH)-700)/2, (glutGet(GLUT_SCREEN_HEIGHT)-800)/2);
     glutCreateWindow(argv[0]);
 
     glutDisplayFunc(myDisplay);
