@@ -2,6 +2,9 @@
 #include <cstdlib>
 #include <GL/glut.h>
 #include <movimentoController.h>
+#include <bulletsController.h>
+#include <timeController.h>
+
 
 struct PlayerOne {
 	GLdouble x;
@@ -28,6 +31,8 @@ void myDisplay(void){
     glClearColor(0,0,0,0);
     glClear(GL_COLOR_BUFFER_BIT);
     movimentaPlayer(player1.x, player1.y); 
+    normalBullet();
+    masterBullet();
 		
     glutSwapBuffers();
 }
@@ -66,6 +71,8 @@ int main(int argc, char** argv){
     inicializacao();
 
 	glutSpecialFunc(controlesPlayer);
+	glutTimerFunc(60, time, 0);
+	
     glutDisplayFunc(myDisplay);
     glutReshapeFunc(myReshape);
     glutMainLoop();
