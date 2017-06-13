@@ -34,5 +34,9 @@ void movimentaPlayer(GLdouble xc, GLdouble yc){
 		y = y+yc;
 	}
 }
+
+int tiroLinear() {
+	return -1;
+}
 	
 #endif

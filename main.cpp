@@ -3,15 +3,19 @@
 #include <GL/glut.h>
 #include <movimentoController.h>
 #include <bulletsController.h>
-#include <timeController.h>
-
 
 struct PlayerOne {
 	GLdouble x;
 	GLdouble y;
 };
 
+struct Normalbullet {
+	GLdouble x;
+	GLdouble y;
+};
+
 PlayerOne player1;
+Normalbullet normalbullet[5] = {0};
 
 void inicializacao() {
 	player1.x = 0;
@@ -31,8 +35,9 @@ void myDisplay(void){
     glClearColor(0,0,0,0);
     glClear(GL_COLOR_BUFFER_BIT);
     movimentaPlayer(player1.x, player1.y); 
-    normalBullet();
-    masterBullet();
+    for(int i = 0; i < 5; i++){
+    	normalBullet(normalbullet[i].x, normalbullet[i].y);	
+	}
 		
     glutSwapBuffers();
 }
@@ -43,23 +48,36 @@ void controlesPlayer(int key, int x, int y){
 	
 	switch(key){
 		case 102:
-			player1.x = 1.5;
+			player1.x += 1.5;
 		break;
 		
 		case 103:
-			player1.y = -1.5;
+			player1.y += -1.5;
 		break;
 		
 		case 100:
-			player1.x = -1.5;
+			player1.x += -1.5;
 		break;
 		
 		case 101:
-			player1.y = 1.5;
+			player1.y += 1.5;
 		break;
 	}
 
 	glutPostRedisplay();
+}
+
+void mov(){
+	for(int i = 0; i < 5; i++){
+		normalbullet[i].y += tiroLinear();
+	}
+}
+
+void time(int id){
+	
+	mov();
+    glutPostRedisplay();
+    glutTimerFunc(60, time, 1);
 }
 
 int main(int argc, char** argv){
