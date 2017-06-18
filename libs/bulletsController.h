@@ -6,7 +6,7 @@ void normalBullet(GLdouble x, GLdouble y){
 	glPushMatrix();
 		glTranslatef(x, y, 0);
 		glColor3f(1, 0, 0);
-		glutSolidCube(2);
+		glutWireSphere(1, 24, 24);
 	glPopMatrix();
 }
 

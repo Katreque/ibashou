@@ -15,37 +15,40 @@ struct Normalbullet {
 };
 
 PlayerOne player1;
-Normalbullet normalbullet[5] = {0};
+Normalbullet normalbullet[10];
 
 void inicializacao() {
 	player1.x = 0;
-	player1.y = 0;
+	player1.y = -45;
 }
 
 void myReshape(int w, int h){
     glViewport(0,0,w,h);
     glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluOrtho2D(0, 100, 0, 100);
+        glLoadIdentity();
+        gluPerspective (90, float(w)/h, 1, 100);
     glMatrixMode(GL_MODELVIEW);
     glutPostRedisplay();
 }
 
 void myDisplay(void){
     glClearColor(0,0,0,0);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    glLoadIdentity();
+     gluLookAt(0, 0, 50,
+              0, 0, 0,
+              0, 1, 0);
+ 	
     movimentaPlayer(player1.x, player1.y); 
-    for(int i = 0; i < 5; i++){
-    	normalBullet(normalbullet[i].x, normalbullet[i].y);	
+    for(int i = 0; i < 1; i++){
+    	normalBullet(normalbullet[i].x, normalbullet[i].y);			
 	}
-		
-    glutSwapBuffers();
+    
+	glutSwapBuffers();
 }
 
 void controlesPlayer(int key, int x, int y){
-	player1.x = 0;
-	player1.y = 0;
-	
 	switch(key){
 		case 102:
 			player1.x += 1.5;
@@ -63,13 +66,38 @@ void controlesPlayer(int key, int x, int y){
 			player1.y += 1.5;
 		break;
 	}
-
+	
+	if(player1.x < -48){ 
+		player1.x += 1.5;
+	}
+	
+	if(player1.x > 48){ 
+		player1.x -= 1.5;
+	}
+	
+	if(player1.y < -48){ 
+		player1.y += 1.5;
+	}
+	
+	if(player1.y > 48){ 
+		player1.y -= 1.5;
+	}
+	
 	glutPostRedisplay();
 }
 
+void calcTiro(){
+	for(int i = 0; i < 1; i+=3){
+		int r = tiroLinear();
+		
+		normalbullet[i].x = r;
+		normalbullet[i].y -= 1;
+	}
+}
+
 void mov(){
-	for(int i = 0; i < 5; i++){
-		normalbullet[i].y += tiroLinear();
+	for(int i = 0; i < 1; i+=3){	
+		normalbullet[i].x += -1;
 	}
 }
 
@@ -82,17 +110,20 @@ void time(int id){
 
 int main(int argc, char** argv){
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
+    glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowSize(700,700);
-    glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH)-700)/2, (glutGet(GLUT_SCREEN_HEIGHT)-800)/2);
+    glutInitWindowPosition(0, 0);
     glutCreateWindow(argv[0]);
-    inicializacao();
-
-	glutSpecialFunc(controlesPlayer);
-	glutTimerFunc(60, time, 0);
-	
+    
+    glEnable(GL_DEPTH_TEST);
     glutDisplayFunc(myDisplay);
     glutReshapeFunc(myReshape);
+    
+    inicializacao();
+	glutSpecialFunc(controlesPlayer);
+	calcTiro();
+	glutTimerFunc(60, time, 0);
+	
     glutMainLoop();
     return 0;
 }
