@@ -89,9 +89,14 @@ void myDisplay(void){
               0, 0, 0,
               0, 1, 0);
               
-    //glRasterPos2i(40, 45);
-	//glColor3f(1, 1, 1);
-	//glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, score);
+    char buffer[4] = {};
+	itoa(score, buffer, 10);
+              
+    glRasterPos2i(40, 45);
+	glColor3f(1, 1, 1);
+	for(int i = 0; i < 5; i++){
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, buffer[i]);
+	}
  	
     movimentaPlayer(player1.x, player1.y); 
     for(int i = 0; i < TOTALTIROS; i++){
@@ -211,7 +216,6 @@ int bateu(){
 			((normalbullet[i].y >= player1.y - 2) && (normalbullet[i].y <= player1.y + 2))		
 		){
 			finalScore = score;
-			//printf("%d", finalScore);
 			fim = true;
 			PlaySound("C:\\Users\\rveri_000\\Desktop\\Programacao\\ibashou\\GameOver2.wav", NULL, SND_ASYNC|SND_FILENAME);
 		}
